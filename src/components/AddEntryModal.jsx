@@ -13,13 +13,14 @@ export default function AddEntryModal({ isOpen, onClose, onSubmit, category }) {
             onClose();
           }}
         >
-          <label className="block mb-2">
-            Date/Heure :
-            <input type="datetime-local" name="date" className="w-full border p-2 rounded" required />
-          </label>
+          
 
           {category === 'Repas' && (
             <>
+              <label className="block mb-2">
+                Date/Heure :
+                <input type="datetime-local" name="date" className="w-full border p-2 rounded" required />
+              </label>
               <label className="block mb-2">
                 Type :
                 <select name="type" className="w-full border p-2 rounded">
@@ -40,6 +41,10 @@ export default function AddEntryModal({ isOpen, onClose, onSubmit, category }) {
 
           {category === 'Couche' && (
             <>
+              <label className="block mb-2">
+                Date/Heure :
+                <input type="datetime-local" name="date" className="w-full border p-2 rounded" required />
+              </label>
               <label className="block mb-2">
                 Type :
                 <select name="type" className="w-full border p-2 rounded">
@@ -62,7 +67,34 @@ export default function AddEntryModal({ isOpen, onClose, onSubmit, category }) {
               </label>
             </>
           )}
-
+          {category === 'Bain' && (
+            <>
+              <label className="block mb-2">
+                Date/Heure :
+                <input type="date" name="date" className="w-full border p-2 rounded" required />
+              </label>
+              <label className="block mb-2">
+                Commentaires :
+                <input type="text" name="comments" className="w-full border p-2 rounded" />
+              </label>
+            </>
+          )}
+          {category === 'Pesée' && (
+            <>
+              <label className="block mb-2">
+                Date/Heure :
+                <input type="date" name="date" className="w-full border p-2 rounded" required />
+              </label>
+              <label className="block mb-2">
+                Poids (kg) :
+                <input type="number" name="poids" className="w-full border p-2 rounded" />
+              </label>
+              <label className="block mb-2">
+                Commentaires :
+                <input type="text" name="comments" className="w-full border p-2 rounded" />
+              </label>
+            </>
+          )}
           <div className="flex justify-end gap-2 mt-4">
             <button type="button" onClick={onClose} className="text-gray-600">
               Annuler

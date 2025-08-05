@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import CategoryCard from './components/CategoryCard';
 import AddEntryModal from './components/AddEntryModal';
 import SettingsModal from './components/SettingsModal';
+import useStats from './hooks/useStats';
 import { fetchLastEntries } from './utils/fetchLastEntries';
 import { sendToGoogleSheet } from './utils/sendToSheet';
 
@@ -10,6 +11,8 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [lastEntries, setLastEntries] = useState({ repas: null, couche: null });
   const [isLoading, setIsLoading] = useState(true);
+  const [bgTheme, setTheme] = useState(localStorage.getItem('bgTheme') || 'bg-gray-100');
+  const [appTitle, setAppTitle] = useState(localStorage.getItem('appTitle') || 'Suivi bébé');
 
   // Récupérer les dernières entrées depuis le Google Sheet
   const loadData = async () => {
@@ -43,9 +46,11 @@ function App() {
     setActiveModal(null);
   };
 
-  const handleSaveSettings = (sheetPath, sheetURL) => {
+  const handleSaveSettings = (sheetPath, sheetURL, title) => {
     localStorage.setItem('sheetPath', sheetPath);
     localStorage.setItem('sheetURL', sheetURL);
+    localStorage.setItem('appTitle', title);
+    setAppTitle(title);
   };
 
   // ✅ Bouton pour ouvrir la Google Sheet
@@ -57,10 +62,24 @@ function App() {
       alert('Aucune URL de feuille définie dans les paramètres.');
     }
   };
+
+  const handleThemeChange = (newTheme) => {
+    setTheme(newTheme);
+    localStorage.setItem('bgTheme', newTheme);
+  }
+  //Gestion des stats
+  const scriptURL = localStorage.getItem('sheetPath'); // L'URL configurée dans les paramètres
+  const { stats, loading, error } = useStats(scriptURL);
+  const repasStats = stats.repas || [];
+  const coucheStats = stats.couche || [];
+  const bainStats = stats.bain || [];
+  const peseeStats = stats.pesée || [];
+
+  ;
   return (
-    <div className="min-h-screen bg-gray-100 p-4 max-w-2xl mx-auto">
+    <div className={`min-h-screen ${bgTheme} p-4 max-w-xl mx-auto`}>
       <header className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">👶 Suivi Bébé</h1>
+        <h1 className="text-2xl font-bold">👶 {appTitle}</h1>
         <button onClick={() => setShowSettings(true)} className="text-gray-600 text-xl">
           ⚙️
         </button>
@@ -80,7 +99,7 @@ function App() {
               amount: lastEntries.repas?.quantite,
               comments: lastEntries.repas?.commentaires,
             }}
-            stats={['Lait maternel', 'Moy: 130ml', '5 repas']}
+            stats={repasStats}
           />
 
           <CategoryCard
@@ -90,10 +109,31 @@ function App() {
             lastEntry={{
               datetime: lastEntries.couche?.date,
               type: lastEntries.couche?.type,
-              consistency: lastEntries.couche?.consistance,
+              volume: lastEntries.couche?.volume,
               comments: lastEntries.couche?.commentaires,
             }}
-            stats={['Caca', 'Molle', 'Moy: 6/j']}
+            stats={coucheStats}
+          />
+          <CategoryCard
+            title="Bain"
+            onAddClick={() => setActiveModal('Bain')}
+            lastEntryTime={lastEntries.bain?.date}
+            lastEntry={{
+              datetime: lastEntries.bain?.date,
+              comments: lastEntries.bain?.commentaires,
+            }}
+            stats={bainStats}
+          />
+          <CategoryCard
+            title="Pesée"
+            onAddClick={() => setActiveModal('Pesée')}
+            lastEntryTime={lastEntries.pesée?.date}
+            lastEntry={{
+              datetime: lastEntries.pesée?.date,
+              poids: lastEntries.pesée?.poids,
+              comments: lastEntries.pesée?.commentaires,
+            }}
+            stats={peseeStats}
           />
         </>
       )}
@@ -109,6 +149,7 @@ function App() {
         isOpen={showSettings}
         onClose={() => setShowSettings(false)}
         onSave={handleSaveSettings}
+        onThemeChange={handleThemeChange}
         //onSave={(path) => localStorage.setItem('sheetPath', path)}
       />
       {/* ✅ Bouton "Voir le tableau Google Sheet" */}

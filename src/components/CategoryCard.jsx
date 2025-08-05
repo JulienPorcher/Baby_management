@@ -16,7 +16,7 @@ export default function CategoryCard({ title, onAddClick, lastEntryTime, lastEnt
         </button>
       </div>
       <LastEntrySummary category={title} entry={lastEntry} />
-      <Timer lastEntryTime={lastEntryTime} />
+      <Timer lastEntryTime={lastEntryTime} category={title} />
       <StatsRow stats={stats} />
     </div>
   );

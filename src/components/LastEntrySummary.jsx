@@ -14,7 +14,23 @@ export default function LastEntrySummary({ category, entry }) {
   if (category === 'Couche') {
     return (
       <p className="text-sm text-gray-800 mb-1">
-        💩 <strong>Dernier :</strong> {entry.type}, {entry.consistency}, {time}
+        💩 <strong>Dernier :</strong> {entry.type}, {time}
+      </p>
+    );
+  }
+
+  if (category === 'Bain') {
+    return (
+      <p className="text-sm text-gray-800 mb-1">
+        🛁 <strong>Dernier :</strong>
+      </p>
+    );
+  }
+
+  if (category === 'Pesée') {
+    return (
+      <p className="text-sm text-gray-800 mb-1">
+        ⚖ <strong>Dernier :</strong> {entry.poids} kg
       </p>
     );
   }
