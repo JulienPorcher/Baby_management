@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../../../../gestion-bebe/.netlify/functions-internal/sendData.js"],
+  "sourceRoot": "C:/Users/julie/AppData/Local/Temp/tmp-14888-J79GTUulVv42",
+  "sourcesContent": ["export async function handler(event, context) {\r\n  if (event.httpMethod !== 'POST') {\r\n    return {\r\n      statusCode: 405,\r\n      body: 'Method Not Allowed',\r\n    };\r\n  }\r\n\r\n  try {\r\n    const data = JSON.parse(event.body);\r\n\r\n    const appScriptUrl = \"https://script.google.com/macros/s/AKfycbx_4KgHr4xQvDhbO03P4AHBg1j2Qi9luQG3KWsQ6fpFUuijQc7OWMP2-HwtroGF_9Y2/exec?category=\" + encodeURIComponent(data.category);\r\n\r\n    const response = await fetch(appScriptUrl, {\r\n      method: 'POST',\r\n      headers: { 'Content-Type': 'application/json' },\r\n      body: JSON.stringify(data),\r\n    });\r\n\r\n    const result = await response.text();\r\n\r\n    return {\r\n      statusCode: 200,\r\n      body: result,\r\n    };\r\n  } catch (err) {\r\n    return {\r\n      statusCode: 500,\r\n      body: JSON.stringify({ error: err.message }),\r\n    };\r\n  }\r\n}\r\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,eAAsB,QAAQ,OAAO,SAAS;AAC5C,MAAI,MAAM,eAAe,QAAQ;AAC/B,WAAO;AAAA,MACL,YAAY;AAAA,MACZ,MAAM;AAAA,IACR;AAAA,EACF;AAEA,MAAI;AACF,UAAM,OAAO,KAAK,MAAM,MAAM,IAAI;AAElC,UAAM,eAAe,+HAA+H,mBAAmB,KAAK,QAAQ;AAEpL,UAAM,WAAW,MAAM,MAAM,cAAc;AAAA,MACzC,QAAQ;AAAA,MACR,SAAS,EAAE,gBAAgB,mBAAmB;AAAA,MAC9C,MAAM,KAAK,UAAU,IAAI;AAAA,IAC3B,CAAC;AAED,UAAM,SAAS,MAAM,SAAS,KAAK;AAEnC,WAAO;AAAA,MACL,YAAY;AAAA,MACZ,MAAM;AAAA,IACR;AAAA,EACF,SAAS,KAAK;AACZ,WAAO;AAAA,MACL,YAAY;AAAA,MACZ,MAAM,KAAK,UAAU,EAAE,OAAO,IAAI,QAAQ,CAAC;AAAA,IAC7C;AAAA,EACF;AACF;",
+  "names": []
+}
