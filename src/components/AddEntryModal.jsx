@@ -87,7 +87,7 @@ export default function AddEntryModal({ isOpen, onClose, onSubmit, category }) {
               </label>
               <label className="block mb-2">
                 Poids (kg) :
-                <input type="number" name="poids" className="w-full border p-2 rounded" />
+                <input type="number" name="poids" step="0.01" className="w-full border p-2 rounded" />
               </label>
               <label className="block mb-2">
                 Commentaires :

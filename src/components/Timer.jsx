@@ -28,5 +28,5 @@ export default function Timer({ lastEntryTime, category}) {
     return () => clearInterval(interval);
   }, [lastEntryTime, category]);
 
-  return <p className="text-sm text-gray-600">⏱ Dernier : il y a {elapsed}</p>;
+  return <p className="text-sm text-gray-600">⏱ Il y a {elapsed}</p>;
 }
