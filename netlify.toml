@@ -8,4 +8,4 @@
   status = 200
 
 [functions]
-  directory = ".netlify/functions-internal"
+  directory = "netlify/functions"
