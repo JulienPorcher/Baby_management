@@ -7,5 +7,10 @@
   to = "/index.html"
   status = 200
 
+[dev]
+  functions = "netlify/functions"
+
 [functions]
   directory = "netlify/functions"
+
+
