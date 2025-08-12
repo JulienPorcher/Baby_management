@@ -1,1 +1,1 @@
-module.exports = require('./.netlify/functions-internal/sendData.js')
+module.exports = require('./netlify/functions/sendData.js')

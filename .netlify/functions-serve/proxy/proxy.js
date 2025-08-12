@@ -1,1 +1,1 @@
-module.exports = require('./.netlify/functions-internal/proxy.js')
+module.exports = require('./netlify/functions/proxy.js')

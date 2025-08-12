@@ -1,32 +1,42 @@
-export async function handler(event, context) {
+export async function handler(event) {
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      body: 'Method Not Allowed',
+      body: JSON.stringify({ error: 'Méthode non autorisée' }),
     };
   }
 
   try {
     const data = JSON.parse(event.body);
 
-    const appScriptUrl = "https://script.google.com/macros/s/AKfycbx_4KgHr4xQvDhbO03P4AHBg1j2Qi9luQG3KWsQ6fpFUuijQc7OWMP2-HwtroGF_9Y2/exec?category=" + encodeURIComponent(data.category);
+    // On récupère l'URL Apps Script depuis les données envoyées
+    const sheetPath = data.sheetPath;
+    if (!sheetPath) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Paramètre sheetPath manquant' }),
+      };
+    }
 
-    const response = await fetch(appScriptUrl, {
+    // On appelle directement ton script Google Sheets
+    const response = await fetch(`${sheetPath}?category=${encodeURIComponent(data.category)}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(data),
     });
 
-    const result = await response.text();
+    const text = await response.text();
 
     return {
-      statusCode: 200,
-      body: result,
+      statusCode: response.status,
+      body: text,
     };
-  } catch (err) {
+  } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message }),
+      body: JSON.stringify({ error: error.message }),
     };
   }
 }
